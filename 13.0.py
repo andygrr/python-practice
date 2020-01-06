@@ -3,8 +3,6 @@ from tkinter.ttk import *
 
 
 # 将框架（Frame ）的共同属性作为默认值，以简化创建过程
-
-
 def my_frame(master):
     w = Frame(master)
     w.pack(side=TOP, expand=YES, fill=BOTH)
@@ -12,8 +10,6 @@ def my_frame(master):
 
 
 # 将按钮（Button ）的共同属性作为默认值，以简化创建过程
-
-
 def my_button(master, text, command):
     w = Button(master, text=text, command=command, width=6)
     w.pack(side=LEFT, expand=YES, fill=BOTH, padx=2, pady=2)
@@ -21,8 +17,6 @@ def my_button(master, text, command):
 
 
 # 将数字串最末的字符删除并返回
-
-
 def back(text):
     if len(text) > 0:
         return text[:-1]
@@ -31,9 +25,8 @@ def back(text):
 
 
 # 利用eval 函数计算表达式字符串的值
-
-
 def calc(text):
+    global sep_flag
     try:
         if sep_flag.get() == 0:
             return eval(del_sep(text))
@@ -47,8 +40,6 @@ def calc(text):
 # 纯整数部份、同时有整数和小数部份。由于字符串是不可改变的，所以
 # 先由字符串生成列表，以便执行insert 操作和extend 操作，操作完成后
 # 再由列表生成字符串 返回
-
-
 def add_sep(text):
     dot_index = text.find('.')
     if dot_index > 0:
@@ -74,16 +65,13 @@ def add_sep(text):
 
 
 # 删除数字串中所有的千位分隔符
-
-
 def del_sep(text):
     return text.replace(',', '')
 
 
 # 开始计算器界面的实现
-
-
 def main():
+    global sep_flag
     wind = Tk()
     wind.title(" 简易计算器")  # 设置主窗口标题
     main_menu = Menu(wind)  # 创建最上层主菜单
@@ -114,11 +102,11 @@ def main():
     # 创建其余四行按钮，每行四个
     for key in ('789/', '456*', '123-', '0.=+'):
         fsymb = my_frame(wind)
-    for char in key:
-        if char == '=':
-            my_button(fsymb, char, lambda t=text: t.set(calc(t.get())))
-        else:
-            my_button(fsymb, char, lambda t=text, c=char: t.set(t.get() + c))
+        for char in key:
+            if char == '=':
+                my_button(fsymb, char, lambda t=text: t.set(calc(t.get())))
+            else:
+                my_button(fsymb, char, lambda t=text, c=char: t.set(t.get() + c))
     wind.mainloop()
 
 
